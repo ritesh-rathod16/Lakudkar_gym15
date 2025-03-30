@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lakudkar Gym - Transform Your Fitness Journey</title>
+    <title>Lakudkar Gym - 3D Fitness Experience</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
     <style>
@@ -96,17 +97,6 @@
         @keyframes fadeIn {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Sparkle Animation */
-        .sparkle {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background-color: var(--accent);
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0;
         }
 
         /* Navigation */
@@ -255,8 +245,8 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* 3D Dumbbell Animation */
-        #dumbbell-container {
+        /* 3D Model Container */
+        #model-container {
             position: absolute;
             top: 0;
             left: 0;
@@ -292,159 +282,96 @@
             background-color: var(--accent);
         }
 
-        /* About Section */
-        .about-content {
+        /* 3D Equipment Showcase */
+        .equipment-showcase {
             display: flex;
-            gap: 50px;
-            align-items: center;
-            margin-bottom: 50px;
-        }
-
-        .about-text {
-            flex: 1;
-        }
-
-        .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: var(--accent);
-        }
-
-        .about-text p {
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-
-        .about-images {
-            flex: 1;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .about-img {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: var(--transition);
-            height: 250px;
-        }
-
-        .about-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .about-img:hover {
-            transform: translateY(-10px);
-        }
-
-        .about-img:hover img {
-            transform: scale(1.05);
-        }
-
-        /* Classes Section */
-        .classes-container {
-            display: flex;
+            flex-wrap: wrap;
             gap: 30px;
             justify-content: center;
-            flex-wrap: wrap;
             margin-top: 50px;
         }
 
-        .class-card {
+        .equipment-card {
             background-color: var(--card-bg);
             border-radius: 15px;
+            padding: 20px;
+            width: 300px;
+            height: 400px;
+            position: relative;
             overflow: hidden;
-            width: 350px;
-            transition: var(--transition);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(5px);
-            position: relative;
-            transform-style: preserve-3d;
-            perspective: 1000px;
+            transition: var(--transition);
         }
 
-        .class-card:hover {
-            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+        .equipment-card:hover {
+            transform: translateY(-10px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
 
-        .class-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        .equipment-model {
             width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%);
-            opacity: 0;
-            transition: var(--transition);
+            height: 250px;
+            margin-bottom: 20px;
         }
 
-        .class-card:hover::before {
-            opacity: 1;
-        }
-
-        .class-img {
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .class-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .class-card:hover .class-img img {
-            transform: scale(1.1);
-        }
-
-        .class-content {
-            padding: 25px;
-        }
-
-        .class-content h3 {
+        .equipment-info h3 {
             font-size: 1.5rem;
             margin-bottom: 15px;
             color: var(--accent);
         }
 
-        .class-content p {
-            margin-bottom: 20px;
+        .equipment-info p {
             color: var(--text-secondary);
             line-height: 1.6;
         }
 
-        .class-price {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 20px;
+        /* Virtual Tour Section */
+        .virtual-tour {
+            height: 80vh;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 50px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
-        .class-button {
-            display: inline-block;
-            padding: 10px 25px;
-            background-color: transparent;
+        #tour-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .tour-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .tour-btn {
+            background-color: rgba(30, 30, 30, 0.7);
             color: var(--accent);
-            border: 2px solid var(--accent);
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             transition: var(--transition);
+            backdrop-filter: blur(5px);
         }
 
-        .class-button:hover {
+        .tour-btn:hover {
             background-color: var(--accent);
             color: var(--primary);
         }
 
-        /* Membership Plans */
+        /* Membership Plans Section */
         .membership-plans {
             display: flex;
             gap: 30px;
@@ -528,457 +455,6 @@
         .plan-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-        }
-
-        /* Diet Plan Section */
-        .diet-plans {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .diet-card {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: var(--transition);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-        }
-
-        .diet-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .diet-img {
-            width: 45%;
-            height: 350px;
-            overflow: hidden;
-        }
-
-        .diet-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .diet-card:hover .diet-img img {
-            transform: scale(1.05);
-        }
-
-        .diet-content {
-            width: 55%;
-            padding: 30px;
-        }
-
-        .diet-content h3 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: var(--accent);
-        }
-
-        .diet-feature {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
-        .diet-feature-icon {
-            color: var(--accent);
-            margin-right: 10px;
-            font-size: 1.2rem;
-            margin-top: 3px;
-        }
-
-        .diet-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 25px;
-            background-color: transparent;
-            color: var(--accent);
-            border: 2px solid var(--accent);
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .diet-button:hover {
-            background-color: var(--accent);
-            color: var(--primary);
-        }
-
-        /* Workout Plan Section */
-        .workout-plans {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .workout-card {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: var(--transition);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-        }
-
-        .workout-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .workout-img {
-            width: 45%;
-            height: 350px;
-            overflow: hidden;
-        }
-
-        .workout-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .workout-card:hover .workout-img img {
-            transform: scale(1.05);
-        }
-
-        .workout-content {
-            width: 55%;
-            padding: 30px;
-        }
-
-        .workout-content h3 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: var(--accent);
-        }
-
-        .workout-feature {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
-        .workout-feature-icon {
-            color: var(--accent);
-            margin-right: 10px;
-            font-size: 1.2rem;
-            margin-top: 3px;
-        }
-
-        .workout-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 25px;
-            background-color: transparent;
-            color: var(--accent);
-            border: 2px solid var(--accent);
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .workout-button:hover {
-            background-color: var(--accent);
-            color: var(--primary);
-        }
-
-        /* Location Section */
-        .location-container {
-            display: flex;
-            gap: 50px;
-            align-items: center;
-            margin-top: 50px;
-        }
-
-        .map-container {
-            flex: 1;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .map-container iframe {
-            width: 100%;
-            height: 400px;
-            border: none;
-        }
-
-        .location-info {
-            flex: 1;
-        }
-
-        .location-info h3 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: var(--accent);
-        }
-
-        .info-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .info-icon {
-            color: var(--accent);
-            margin-right: 15px;
-            font-size: 1.5rem;
-            width: 30px;
-            text-align: center;
-        }
-
-        .parking-img {
-            width: 80%;
-            margin: 30px auto 0;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .parking-img img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Contact Section */
-        .contact-container {
-            display: flex;
-            gap: 50px;
-            margin-top: 50px;
-        }
-
-        .contact-form {
-            flex: 1;
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-        }
-
-        .contact-form h3 {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            color: var(--accent);
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: var(--text);
-            font-family: 'Montserrat', sans-serif;
-            transition: var(--transition);
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            background-color: rgba(212, 175, 55, 0.1);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background-color: var(--accent);
-            color: var(--primary);
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-top: 10px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-        }
-
-        .contact-info {
-            flex: 1;
-        }
-
-        .contact-info h3 {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            color: var(--accent);
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .contact-icon {
-            color: var(--accent);
-            margin-right: 15px;
-            font-size: 1.5rem;
-            width: 30px;
-            text-align: center;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--card-bg);
-            color: var(--text);
-            transition: var(--transition);
-        }
-
-        .social-link:hover {
-            background-color: var(--accent);
-            color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            overflow-y: auto;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: var(--card-bg);
-            margin: 50px auto;
-            padding: 40px;
-            border-radius: 15px;
-            max-width: 900px;
-            position: relative;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            background-image: url('https://i.pinimg.com/474x/65/1f/00/651f00fd2fdf4d3774ce93711ae8b866.jpg');
-            background-size: cover;
-            background-position: center;
-            background-blend-mode: overlay;
-        }
-
-        .modal-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(18, 18, 18, 0.9);
-            z-index: -1;
-            border-radius: 15px;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 1.5rem;
-            color: var(--text);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .close-modal:hover {
-            color: var(--accent);
-            transform: rotate(90deg);
-        }
-
-        .modal-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            margin-bottom: 30px;
-            color: var(--accent);
-            text-align: center;
-        }
-
-        .modal-plan {
-            margin-bottom: 40px;
-        }
-
-        .modal-day {
-            background-color: rgba(30, 30, 30, 0.7);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-day h4 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--accent);
-        }
-
-        .modal-exercise {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .modal-exercise:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .exercise-icon {
-            color: var(--accent);
-            margin-right: 10px;
-            font-size: 1.2rem;
-            width: 25px;
-            text-align: center;
         }
 
         /* Footer */
@@ -1092,29 +568,8 @@
         }
 
         @media (max-width: 992px) {
-            .about-content {
-                flex-direction: column;
-            }
-            
-            .diet-card, .workout-card {
-                flex-direction: column;
-            }
-            
-            .diet-img, .workout-img {
-                width: 100%;
-                height: 250px;
-            }
-            
-            .diet-content, .workout-content {
-                width: 100%;
-            }
-            
-            .location-container, .contact-container {
-                flex-direction: column;
-            }
-            
-            .map-container iframe {
-                height: 300px;
+            .virtual-tour {
+                height: 60vh;
             }
         }
 
@@ -1153,10 +608,8 @@
                 font-size: 2rem;
             }
             
-            .modal-content {
-                padding: 30px 20px;
-                margin: 30px auto;
-                width: 90%;
+            .virtual-tour {
+                height: 50vh;
             }
         }
 
@@ -1169,16 +622,12 @@
                 padding: 12px 30px;
             }
             
-            .class-card, .plan-card {
+            .equipment-card, .plan-card {
                 width: 100%;
             }
             
-            .about-img {
-                height: 180px;
-            }
-            
-            .modal-day h4 {
-                font-size: 1.3rem;
+            .virtual-tour {
+                height: 40vh;
             }
         }
 
@@ -1200,83 +649,10 @@
             animation-delay: 1s;
         }
 
-        /* Particle Animation */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* 3D Model Styles */
+        .model-viewer {
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .particle {
-            position: absolute;
-            background-color: var(--accent);
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: float 15s infinite linear;
-        }
-
-        @keyframes sparkle {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(0); opacity: 0; }
-        }
-
-        /* Gym Equipment Animation */
-        .equipment-animation {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .equipment {
-            position: absolute;
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.1;
-            animation: float 8s infinite ease-in-out;
-        }
-
-        .dumbbell {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23d4af37" d="M104 96H56c-13.3 0-24 10.7-24 24v104H8c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h24v104c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V120c0-13.3-10.7-24-24-24zm352 0h-48c-13.3 0-24 10.7-24 24v272c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V120c0-13.3-10.7-24-24-24z"/></svg>');
-            width: 50px;
-            height: 50px;
-        }
-
-        .barbell {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="%23d4af37" d="M48 192h32v128H48zm552 0h32v128h-32zM208 96h32v320h-32zm112 0h32v320h-32zm112 0h32v320h-32zM104 96h16v320H104zm408 0h16v320h-16z"/></svg>');
-            width: 80px;
-            height: 20px;
-        }
-
-        /* 3D Card Effect */
-        .card-3d {
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease;
-        }
-
-        .card-3d:hover {
-            transform: rotateY(10deg) rotateX(5deg);
-        }
-
-        /* Neon Glow */
-        .neon-text {
-            text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent), 0 0 20px var(--accent);
-            animation: flicker 3s infinite alternate;
-        }
-
-        @keyframes flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent), 0 0 20px var(--accent);
-            }
-            20%, 24%, 55% {
-                text-shadow: none;
-            }
         }
     </style>
 </head>
@@ -1297,7 +673,9 @@
         </div>
         <div class="nav-links">
             <a href="#home">Home</a>
-            <a href="#membership">Membership Plans</a>
+            <a href="#equipment">Equipment</a>
+            <a href="#tour">Virtual Tour</a>
+            <a href="#membership">Membership</a>
             <a href="https://www.google.co.in/maps/place/Lakudkar's+Fitness+Gym/@21.0796742,79.0741384,835m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3bd4bf1b58fb6519:0x6cbe7ba3e9ac2854!8m2!3d21.0796742!4d79.0767133!16s%2Fg%2F11hbsn7l0b?entry=ttu&g_ep=EgoyMDI1MDMyNS4xIKXMDSoASAFQAw%3D%3D" target="_blank">Location</a>
         </div>
         <button class="mobile-menu-btn">
@@ -1305,10 +683,9 @@
         </button>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with 3D Model -->
     <section id="home" class="hero">
-        <div id="dumbbell-container"></div>
-        <div class="particles" id="particles"></div>
+        <div id="model-container"></div>
         <div class="hero-content">
             <h1 class="neon-text">Transform Your Fitness Journey Today!</h1>
             <p>Personalized Training • Expert Coaches • Results Guaranteed</p>
@@ -1316,63 +693,42 @@
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about">
-        <h2 class="section-title">Our Gym</h2>
-        <div class="about-content">
-            <div class="about-text">
-                <h3>Welcome to Lakudkar Gym</h3>
-                <p>At Lakudkar Gym, we're committed to helping you achieve your fitness goals through personalized training programs, expert guidance, and state-of-the-art facilities.</p>
-                <p>Our certified trainers work with you to create customized workout plans tailored to your specific needs, whether you're looking to build muscle, lose weight, or improve overall fitness.</p>
-                <p>With a variety of classes and training options, we provide everything you need for a complete fitness experience.</p>
-            </div>
-            <div class="about-images">
-                <div class="about-img">
-                    <img src="https://i.pinimg.com/736x/f5/51/48/f55148ad2ef92de8597008b60bcd29a8.jpg" alt="Gym Interior">
+    <!-- 3D Equipment Showcase -->
+    <section id="equipment">
+        <h2 class="section-title">Our Premium Equipment</h2>
+        <div class="equipment-showcase">
+            <div class="equipment-card">
+                <div class="equipment-model" id="dumbbell-model"></div>
+                <div class="equipment-info">
+                    <h3>Professional Dumbbells</h3>
+                    <p>High-quality rubber-coated dumbbells ranging from 2kg to 50kg for all your strength training needs.</p>
                 </div>
-                <div class="about-img">
-                    <img src="https://i.pinimg.com/736x/f7/b0/5d/f7b05d5bb3f523a73aa01efeed5be53d.jpg" alt="Training Session">
+            </div>
+            <div class="equipment-card">
+                <div class="equipment-model" id="barbell-model"></div>
+                <div class="equipment-info">
+                    <h3>Olympic Barbells</h3>
+                    <p>Competition-grade barbells with rotating sleeves for smooth lifts and maximum performance.</p>
+                </div>
+            </div>
+            <div class="equipment-card">
+                <div class="equipment-model" id="treadmill-model"></div>
+                <div class="equipment-info">
+                    <h3>Advanced Treadmills</h3>
+                    <p>State-of-the-art treadmills with interactive training programs and heart rate monitoring.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Classes Section -->
-    <section id="classes">
-        <h2 class="section-title">Our Classes</h2>
-        <div class="classes-container">
-            <div class="class-card card-3d">
-                <div class="class-img">
-                    <img src="https://i.pinimg.com/736x/f4/81/51/f48151613d6c1b329c50e38ea78693f0.jpg" alt="Gym Training">
-                </div>
-                <div class="class-content">
-                    <h3>Gym Training</h3>
-                    <p>Build muscle with free weights & machines. Progressive overload programs for all levels.</p>
-                    <div class="class-price">₹1,500/- MONTHLY</div>
-                    <a href="#" class="class-button">Learn More</a>
-                </div>
-            </div>
-            <div class="class-card card-3d">
-                <div class="class-img">
-                    <img src="https://i.pinimg.com/736x/f4/81/51/f48151613d6c1b329c50e38ea78693f0.jpg" alt="Dance Class">
-                </div>
-                <div class="class-content">
-                    <h3>Dance/Zumba</h3>
-                    <p>Learn global dance styles from Bollywood to Hip-Hop while burning calories and having fun!</p>
-                    <div class="class-price">₹1,500/- MONTHLY</div>
-                    <a href="#" class="class-button">Learn More</a>
-                </div>
-            </div>
-            <div class="class-card card-3d">
-                <div class="class-img">
-                    <img src="https://i.pinimg.com/736x/f4/81/51/f48151613d6c1b329c50e38ea78693f0.jpg" alt="Calisthenics">
-                </div>
-                <div class="class-content">
-                    <h3>Calisthenics</h3>
-                    <p>Transform your body with bodyweight mastery. Build strength, flexibility, and endurance.</p>
-                    <div class="class-price">₹1,500/- MONTHLY</div>
-                    <a href="#" class="class-button">Learn More</a>
-                </div>
+    <!-- Virtual Tour Section -->
+    <section id="tour">
+        <h2 class="section-title">Virtual Gym Tour</h2>
+        <div class="virtual-tour">
+            <div id="tour-container"></div>
+            <div class="tour-controls">
+                <button class="tour-btn" id="tour-prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="tour-btn" id="tour-next"><i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
     </section>
@@ -1382,268 +738,73 @@
         <h2 class="section-title">Membership Plans</h2>
         <div class="membership-plans">
             <div class="plan-card">
-                <h3>Gym Package</h3>
+                <h3>Basic Membership</h3>
                 <div class="plan-features">
                     <div class="plan-feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Strength Training</span>
+                        <span>Access to gym equipment</span>
                     </div>
                     <div class="plan-feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Functional & Crossfit Training</span>
+                        <span>Locker room facilities</span>
                     </div>
                     <div class="plan-feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Customized Workout Planning</span>
+                        <span>Free WiFi</span>
                     </div>
                     <div class="plan-feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Diet & Nutrition Consultation</span>
+                        <span>Basic workout plan</span>
                     </div>
                 </div>
-                <div class="plan-price">₹1,500/-</div>
+                <div class="plan-price">₹1,500/month</div>
                 <a href="#contact" class="plan-button">Join Now</a>
             </div>
             <div class="plan-card">
-                <h3>Dance Package</h3>
+                <h3>Premium Membership</h3>
                 <div class="plan-features">
                     <div class="plan-feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Learn Global Dance Styles</span>
+                        <span>All Basic benefits</span>
                     </div>
                     <div class="plan-feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Full-body Workout</span>
+                        <span>Personalized training plan</span>
                     </div>
                     <div class="plan-feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Group Energy & Motivation</span>
+                        <span>Nutrition consultation</span>
                     </div>
                     <div class="plan-feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Party-like Vibe</span>
+                        <span>Unlimited group classes</span>
                     </div>
                 </div>
-                <div class="plan-price">₹1,500/-</div>
+                <div class="plan-price">₹3,000/month</div>
                 <a href="#contact" class="plan-button">Join Now</a>
             </div>
             <div class="plan-card">
-                <h3>Calisthenics Package</h3>
+                <h3>Elite Membership</h3>
                 <div class="plan-features">
                     <div class="plan-feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Full-Body Strength</span>
+                        <span>All Premium benefits</span>
                     </div>
                     <div class="plan-feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Core & Mobility</span>
+                        <span>1-on-1 personal training</span>
                     </div>
                     <div class="plan-feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Explosive Power Training</span>
+                        <span>Progress tracking</span>
                     </div>
                     <div class="plan-feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Progressive Training</span>
+                        <span>24/7 gym access</span>
                     </div>
                 </div>
-                <div class="plan-price">₹1,500/-</div>
+                <div class="plan-price">₹5,000/month</div>
                 <a href="#contact" class="plan-button">Join Now</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Diet Plan Section -->
-    <section id="diet">
-        <h2 class="section-title">Diet Plan</h2>
-        <div class="diet-plans">
-            <div class="diet-card">
-                <div class="diet-img">
-                    <img src="https://i.pinimg.com/474x/6c/e3/b2/6ce3b2be792cdd262d3bc338f4268687.jpg" alt="Diet Plan">
-                </div>
-                <div class="diet-content">
-                    <h3>Daily Nutrition Guide</h3>
-                    <div class="diet-feature">
-                        <div class="diet-feature-icon"><i class="fas fa-utensils"></i></div>
-                        <div>
-                            <strong>Protein:</strong> 1.6-2.2g/kg (Eggs, Chicken, Paneer, Dal)
-                        </div>
-                    </div>
-                    <div class="diet-feature">
-                        <div class="diet-feature-icon"><i class="fas fa-bread-slice"></i></div>
-                        <div>
-                            <strong>Carbs:</strong> 3-5g/kg (Brown Rice, Roti, Oats)
-                        </div>
-                    </div>
-                    <div class="diet-feature">
-                        <div class="diet-feature-icon"><i class="fas fa-seedling"></i></div>
-                        <div>
-                            <strong>Fats:</strong> 0.8-1g/kg (Ghee, Nuts, Coconut)
-                        </div>
-                    </div>
-                    <div class="diet-feature">
-                        <div class="diet-feature-icon"><i class="fas fa-clock"></i></div>
-                        <div>
-                            <strong>Meal Timing:</strong> Pre-Workout (Carbs + protein), Post-Workout (Protein + carbs)
-                        </div>
-                    </div>
-                    <a href="#" class="diet-button" id="view-diet-plan">View Full 7-Day Plan</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Workout Plan Section -->
-    <section id="workout">
-        <h2 class="section-title">Workout Routine</h2>
-        <div class="workout-plans">
-            <div class="workout-card">
-                <div class="workout-content">
-                    <h3>Gym Workout Split</h3>
-                    <div class="workout-feature">
-                        <div class="workout-feature-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>
-                            <strong>6-Day Split:</strong> Focused muscle group training for optimal growth
-                        </div>
-                    </div>
-                    <div class="workout-feature">
-                        <div class="workout-feature-icon"><i class="fas fa-heartbeat"></i></div>
-                        <div>
-                            <strong>Strength & Hypertrophy:</strong> Progressive overload for continuous gains
-                        </div>
-                    </div>
-                    <div class="workout-feature">
-                        <div class="workout-feature-icon"><i class="fas fa-running"></i></div>
-                        <div>
-                            <strong>Cardio:</strong> HIIT and steady-state for endurance and fat loss
-                        </div>
-                    </div>
-                    <div class="workout-feature">
-                        <div class="workout-feature-icon"><i class="fas fa-clock"></i></div>
-                        <div>
-                            <strong>Rest Day:</strong> Active recovery with yoga or light walking
-                        </div>
-                    </div>
-                    <a href="#" class="workout-button" id="view-gym-plan">View 6-Day Gym Workout Split</a>
-                </div>
-                <div class="workout-img">
-                    <img src="https://i.pinimg.com/474x/b0/3c/e5/b03ce54af40c1ff0682db0e0221737d1.jpg" alt="Gym Workout">
-                </div>
-            </div>
-            <div class="workout-card">
-                <div class="workout-img">
-                    <img src="https://i.pinimg.com/736x/f4/81/51/f48151613d6c1b329c50e38ea78693f0.jpg" alt="Calisthenics Workout">
-                </div>
-                <div class="workout-content">
-                    <h3>Calisthenics Plan</h3>
-                    <div class="workout-feature">
-                        <div class="workout-feature-icon"><i class="fas fa-fire"></i></div>
-                        <div>
-                            <strong>Bodyweight Mastery:</strong> Push-ups, pull-ups, dips & muscle-ups
-                        </div>
-                    </div>
-                    <div class="workout-feature">
-                        <div class="workout-feature-icon"><i class="fas fa-hands-helping"></i></div>
-                        <div>
-                            <strong>Core & Mobility:</strong> Planks, leg raises, handstands
-                        </div>
-                    </div>
-                    <div class="workout-feature">
-                        <div class="workout-feature-icon"><i class="fas fa-bolt"></i></div>
-                        <div>
-                            <strong>Explosive Power:</strong> Plyometrics & dynamic movements
-                        </div>
-                    </div>
-                    <div class="workout-feature">
-                        <div class="workout-feature-icon"><i class="fas fa-chart-line"></i></div>
-                        <div>
-                            <strong>Progressive Training:</strong> From beginner to advanced levels
-                        </div>
-                    </div>
-                    <a href="#" class="workout-button" id="view-calisthenics-plan">View 6-Day Calisthenics Plan</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Location Section -->
-    <section id="location">
-        <h2 class="section-title">Our Location</h2>
-        <div class="location-container">
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3635.570712666092!2d79.07413837515436!3d21.07967418058246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd4bf1b58fb6519%3A0x6cbe7ba3e9ac2854!2sLakudkar&#39;s%20Fitness%20Gym!5e1!3m2!1sen!2sin!4v1743186760740!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
-            <div class="location-info">
-                <h3>Visit Us</h3>
-                <div class="info-item">
-                    <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <div>Lakudkar's Fitness Gym, Near Rajiv Nagar, Nagpur, Maharashtra 440034</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-icon"><i class="fas fa-clock"></i></div>
-                    <div>
-                        <strong>Training Days:</strong> Monday - Sunday<br>
-                        <strong>Training Time:</strong> 6 am - 10 pm<br>
-                        <strong>Closed On:</strong> Sunday
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
-                    <div>+91 9876543210</div>
-                </div>
-            </div>
-        </div>
-        <div class="parking-img">
-            <img src="https://tse1.mm.bing.net/th?id=OIP.Oke_TneWMJ1b0_M4kWrSKwHaFj&pid=Api&P=0&h=180" alt="Parking Area">
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <h2 class="section-title">Contact Us</h2>
-        <div class="contact-container">
-            <div class="contact-form">
-                <h3>Get In Touch</h3>
-                <form id="contactForm">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="tel" id="phone" name="phone">
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Send Message</button>
-                </form>
-            </div>
-            <div class="contact-info">
-                <h3>Contact Information</h3>
-                <div class="contact-item">
-                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <div>Lakudkar's Fitness Gym, Near Rajiv Nagar, Nagpur, Maharashtra 440034</div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
-                    <div>+91 9876543210</div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                    <div>info@lakudkargym.com</div>
-                </div>
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
-                </div>
             </div>
         </div>
     </section>
@@ -1652,17 +813,16 @@
     <footer>
         <div class="footer-content">
             <div class="footer-column">
-                <h3>About Us</h3>
-                <p>Lakudkar Gym is a premier fitness center dedicated to helping individuals achieve their health and fitness goals through personalized training and state-of-the-art facilities.</p>
+                <h3>About Lakudkar Gym</h3>
+                <p>Our mission is to provide world-class fitness facilities with cutting-edge equipment and expert trainers to help you achieve your fitness goals.</p>
             </div>
             <div class="footer-column">
                 <h3>Quick Links</h3>
                 <ul class="footer-links">
                     <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#classes">Classes</a></li>
+                    <li><a href="#equipment">Equipment</a></li>
+                    <li><a href="#tour">Virtual Tour</a></li>
                     <li><a href="#membership">Membership</a></li>
-                    <li><a href="#location">Location</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </div>
@@ -1671,6 +831,7 @@
                 <p><i class="fas fa-map-marker-alt"></i> Lakudkar's Fitness Gym, Nagpur</p>
                 <p><i class="fas fa-phone-alt"></i> +91 9876543210</p>
                 <p><i class="fas fa-envelope"></i> info@lakudkargym.com</p>
+                <p><i class="fas fa-clock"></i> Mon-Sun: 6AM - 10PM</p>
             </div>
         </div>
         <div class="footer-bottom">
@@ -1681,481 +842,6 @@
     <!-- Back to Top Button -->
     <div class="back-to-top">
         <i class="fas fa-arrow-up"></i>
-    </div>
-
-    <!-- Diet Plan Modal -->
-    <div class="modal" id="diet-plan-modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2 class="modal-title">7-Day Diet Plan</h2>
-            <div class="modal-plan">
-                <div class="modal-day">
-                    <h4>Day 1 🏋️‍♂️ (Strength Training - High Protein)</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-utensils"></i></div>
-                        <div><strong>Pre-Workout:</strong> Banana 🍌 + Peanut Butter 🥜 + Milk 🥛</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div><strong>Post-Workout:</strong> Roti 🫓 + Chicken Curry 🍗 + Dal 🌱 + Cucumber Salad 🥒</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-seedling"></i></div>
-                        <div><strong>Snack:</strong> Sprout Chaat 🌱 + Almonds 🥜</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-moon"></i></div>
-                        <div><strong>Dinner:</strong> Brown Rice 🍚 + Fish Curry 🐟 + Bhindi Sabzi 🥗</div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 2 🏃‍♂️ (HIIT - Moderate Carb)</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-utensils"></i></div>
-                        <div><strong>Pre-Workout:</strong> Poha 🍚 + Boiled Egg 🥚</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div><strong>Post-Workout:</strong> Quinoa 🍛 + Moong Dal 🌱 + Curd 🥄</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-seedling"></i></div>
-                        <div><strong>Snack:</strong> Greek Yogurt 🥣 + Chia Seeds ✨</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-moon"></i></div>
-                        <div><strong>Dinner:</strong> Jowar Roti 🫓 + Palak Paneer 🧀 + Sprouts 🌱</div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 3 🦵 (Leg Day - High Energy)</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-utensils"></i></div>
-                        <div><strong>Pre-Workout:</strong> Oats 🥣 + Whey 💊 + Dates 🍇</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div><strong>Post-Workout:</strong> Rice 🍚 + Mutton Curry 🍖 + Beetroot Salad 🥗</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-seedling"></i></div>
-                        <div><strong>Snack:</strong> Chana Chaat 🌱 + Green Chutney 🍃</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-moon"></i></div>
-                        <div><strong>Dinner:</strong> Bajra Roti 🫓 + Dal Tadka 🌱 + Mushrooms 🍄</div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 4 💪 (Upper Body - Balanced)</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-utensils"></i></div>
-                        <div><strong>Pre-Workout:</strong> Upma 🍛 + Buttermilk 🥛</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div><strong>Post-Workout:</strong> Roti 🫓 + Egg Bhurji 🍳 + Curd 🥄</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-seedling"></i></div>
-                        <div><strong>Snack:</strong> Makhana 🍿 + Ghee 🧈</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-moon"></i></div>
-                        <div><strong>Dinner:</strong> Khichdi 🍚 + Kadhi 🥣</div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 5 🚴 (Endurance - Carb Cycling)</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-utensils"></i></div>
-                        <div><strong>Pre-Workout:</strong> Idli 🍘 + Sambar 🍛</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div><strong>Post-Workout:</strong> Brown Rice 🍚 + Grilled Fish 🐟 + Lauki Sabzi 🥗</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-seedling"></i></div>
-                        <div><strong>Snack:</strong> Fruit Salad 🍉 + Walnuts 🥜</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-moon"></i></div>
-                        <div><strong>Dinner:</strong> Missi Roti 🫓 + Dal 🌱 + Bhindi Sabzi 🥗</div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 6 🧘 (Active Recovery - Low Carb)</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-utensils"></i></div>
-                        <div><strong>Breakfast:</strong> Egg Whites 🥚 + Spinach Omelet 🍳</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-seedling"></i></div>
-                        <div><strong>Lunch:</strong> Quinoa 🍛 + Chana Masala 🌱 + Cucumber Raita 🥒</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-seedling"></i></div>
-                        <div><strong>Snack:</strong> Coconut Water 🥥 + Pumpkin Seeds 🎃</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-moon"></i></div>
-                        <div><strong>Dinner:</strong> Tofu 🧈 + Mushroom Soup 🍄</div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 7 🛌 (Rest Day - Flexible)</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-utensils"></i></div>
-                        <div><strong>Brunch:</strong> Dosa 🍘 + Sambar 🍛 + Flaxseed Chutney ✨</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-seedling"></i></div>
-                        <div><strong>Snack:</strong> Lassi 🥛 + Sunflower Seeds 🌻</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-info-circle"></i></div>
-                        <div><em>Muscle Gain 💪: Add ghee 🧈 or extra eggs 🥚</em></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Gym Workout Plan Modal -->
-    <div class="modal" id="gym-plan-modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2 class="modal-title">6-Day Gym Workout Split</h2>
-            <div class="modal-plan">
-                <div class="modal-day">
-                    <h4>Day 1️⃣ (Monday): Chest & Triceps</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Flat Bench Press – 4x6-8 🏋️‍♂️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Incline Dumbbell Press – 3x8-10 🏋️‍♀️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Cable Flys – 3x12 ✨</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Triceps Dips – 3xMAX 💪</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Skull Crushers – 3x10-12 🦾</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-running"></i></div>
-                        <div><em>(Finish: 10 min incline treadmill walk 🚶‍♂️)</em></div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 2️⃣ (Tuesday): Back & Biceps</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Pull-Ups – 4x6-8 (add weight if advanced) 🏋️‍♂️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Barbell Rows – 3x8-10 🏋️‍♀️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Lat Pulldown – 3x10-12 🔄</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Deadlifts – 3x5 (heavy!) ⚡</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Hammer Curls – 3x12 💥</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-spa"></i></div>
-                        <div><em>(Stretch: 5 min lats/biceps 🧘)</em></div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 3️⃣ (Wednesday): Legs (Quads Focus)</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Squats – 4x6-8 🦵</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Bulgarian Split Squats – 3x8/leg 🏋️‍♀️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Leg Press – 3x10-12 🚂</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Leg Extensions – 3x15 (slow!) 🐢</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Calf Raises – 4x15 👟</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-bicycle"></i></div>
-                        <div><em>(Cool down: 5 min bike 🚴‍♂️)</em></div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 4️⃣ (Thursday): Shoulders & Abs</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Overhead Press – 4x6-8 🏋️‍♂️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Lateral Raises – 3x12-15 ✈️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Face Pulls – 3x15 🔄</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Hanging Leg Raises – 3x12-15 🦵</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Russian Twists – 3x20/side 🔄</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-water"></i></div>
-                        <div><em>(Finish: 10 min rowing 🚣‍♂️)</em></div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 5️⃣ (Friday): Arms (Hypertrophy)</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Close-Grip Bench – 3x10-12 🏋️‍♂️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>EZ Bar Curls – 3x10-12 💪</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Triceps Rope Pushdown – 3x12-15 🦾</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Preacher Curls – 3x12 🔥</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-info-circle"></i></div>
-                        <div><em>(Superset biceps/triceps for pump! 💥)</em></div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 6️⃣ (Saturday): Legs (Hamstrings/Glutes) + HIIT</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Romanian Deadlifts – 4x8 🏋️‍♀️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Hip Thrusts – 3x10-12 🍑</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Leg Curls – 3x12-15 🦵</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-dumbbell"></i></div>
-                        <div>Farmer's Walk – 3x30 sec 🚶‍♂️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-bolt"></i></div>
-                        <div><strong>HIIT Finisher:</strong></div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-running"></i></div>
-                        <div>30 sec Sprint / 30 sec Walk – 8 rounds ⚡</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Calisthenics Workout Plan Modal -->
-    <div class="modal" id="calisthenics-plan-modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2 class="modal-title">6-Day Calisthenics Plan</h2>
-            <div class="modal-plan">
-                <div class="modal-day">
-                    <h4>Day 1️⃣ (Monday): Upper Body Push</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Push-Ups – 4x12-15 🏋️‍♂️ (slow, full range)</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Pike Push-Ups – 3x8-10 ✋ (shoulder focus)</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Dips (Parallel Bars/Chair) – 3x8-10 🔄</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Handstand Holds – 3x20-30 sec ⏳ (against wall)</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Triceps Extensions – 3x10-12 🦾</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-spa"></i></div>
-                        <div><em>(Finish: 5 min wrist mobility drills ✋)</em></div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 2️⃣ (Tuesday): Upper Body Pull</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Pull-Ups – 4x6-8 🏋️‍♂️ (strict form)</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Bodyweight Rows (Table/TRX) – 3x10-12 🔄</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Archer Rows – 3x6/side 🎯 (scaled: feet on ground)</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Hanging Leg Raises – 3x12-15 🦵</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Plank to Failure – 3xMAX ⏳</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-spa"></i></div>
-                        <div><em>(Stretch: 5 min lats & biceps 🧘‍♂️)</em></div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 3️⃣ (Wednesday): Legs & Core</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Pistol Squats – 3x5/side 🦵 (assisted if needed)</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Jump Squats – 3x12-15 ⚡</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Nordic Hamstring Curls – 3x6-8 🏋️‍♀️ (slow negatives)</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>L-Sit Holds – 3x15-20 sec ⏳ (tucked if advanced)</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-hands"></i></div>
-                        <div>Dragon Flags – 3x6-8 🐉 (scaled: negatives)</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-spa"></i></div>
-                        <div><em>(Cool down: 5 min hip stretches 🧘‍♀️)</em></div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 4️⃣ (Thursday): Skill & Mobility</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-star"></i></div>
-                        <div>Handstand Practice – 10 min ✋ (wall holds/kicks)</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-star"></i></div>
-                        <div>Front Lever Progressions – 3x8-10 sec 🏋️‍♂️ (tuck/adv. tuck)</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-star"></i></div>
-                        <div>Planche Lean Holds – 3x20-30 sec ⏳</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-star"></i></div>
-                        <div>Skin the Cat – 3x5 🔄 (shoulder mobility)</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-star"></i></div>
-                        <div>Bridge Holds – 3x20 sec 🌉</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-info-circle"></i></div>
-                        <div><em>(Focus: Form over reps! 👀)</em></div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 5️⃣ (Friday): Full Body HIIT</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-bolt"></i></div>
-                        <div>Burpees – 4x10 ⚡</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-bolt"></i></div>
-                        <div>Mountain Climbers – 3x20/side 🏔️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-bolt"></i></div>
-                        <div>Explosive Push-Ups – 3x8 💥</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-bolt"></i></div>
-                        <div>Jump Lunges – 3x12/side 🦵</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-bolt"></i></div>
-                        <div>Plank Jacks – 3x30 sec ⏳</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-bolt"></i></div>
-                        <div><em>(Finisher: 5 min jump rope 🏃‍♂️)</em></div>
-                    </div>
-                </div>
-                <div class="modal-day">
-                    <h4>Day 6️⃣ (Saturday): Freestyle & Play</h4>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-star"></i></div>
-                        <div>Muscle-Up Progressions – 10 min 🏋️‍♂️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-star"></i></div>
-                        <div>Human Flag Practice – 3x5 sec/side 🚩</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-star"></i></div>
-                        <div>Handstand Walks – 3x10 steps 🚶‍♂️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-star"></i></div>
-                        <div>Parkour Basics – Vaults/Rolling 🏃‍♂️</div>
-                    </div>
-                    <div class="modal-exercise">
-                        <div class="exercise-icon"><i class="fas fa-laugh"></i></div>
-                        <div><em>(Have fun! 😄)</em></div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -2182,21 +868,21 @@
         // Smooth Scrolling for Navigation Links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                if (this.getAttribute('href') === '#') return;
-                
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
+                if (this.getAttribute('href').startsWith('#') && this.getAttribute('href').length > 1) {
+                    e.preventDefault();
                     
-                    // Close mobile menu if open
-                    if (navLinks.classList.contains('active')) {
-                        navLinks.classList.remove('active');
-                        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menu if open
+                        if (navLinks.classList.contains('active')) {
+                            navLinks.classList.remove('active');
+                            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                        }
                     }
                 }
             });
@@ -2220,132 +906,23 @@
             });
         });
 
-        // Modal Handling
-        const dietPlanBtn = document.getElementById('view-diet-plan');
-        const gymPlanBtn = document.getElementById('view-gym-plan');
-        const calisthenicsPlanBtn = document.getElementById('view-calisthenics-plan');
-        const dietPlanModal = document.getElementById('diet-plan-modal');
-        const gymPlanModal = document.getElementById('gym-plan-modal');
-        const calisthenicsPlanModal = document.getElementById('calisthenics-plan-modal');
-        const closeModalBtns = document.querySelectorAll('.close-modal');
-
-        dietPlanBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            dietPlanModal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        });
-
-        gymPlanBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            gymPlanModal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        });
-
-        calisthenicsPlanBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            calisthenicsPlanModal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        });
-
-        closeModalBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                dietPlanModal.style.display = 'none';
-                gymPlanModal.style.display = 'none';
-                calisthenicsPlanModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            });
-        });
-
-        window.addEventListener('click', function(e) {
-            if (e.target === dietPlanModal) {
-                dietPlanModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-            if (e.target === gymPlanModal) {
-                gymPlanModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-            if (e.target === calisthenicsPlanModal) {
-                calisthenicsPlanModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        });
-
-        // Contact Form Submission
-        const contactForm = document.getElementById('contactForm');
-        
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Initialize Three.js for 3D models
+        function initThreeJS() {
+            // Main hero model
+            initHeroModel();
             
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const message = document.getElementById('message').value;
+            // Equipment models
+            initDumbbellModel();
+            initBarbellModel();
+            initTreadmillModel();
             
-            // Here you would typically send the data to a server
-            // For demonstration, we'll just show an alert
-            alert(`Thank you, ${name}! Your message has been received. We'll contact you soon at ${email}.`);
-            
-            // Reset form
-            contactForm.reset();
-            
-            // In a real implementation, you would use fetch or AJAX to send the data to your server
-            // Example:
-            /*
-            fetch('your-server-endpoint', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    message: message
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('Message sent successfully!');
-                contactForm.reset();
-            })
-            .catch((error) => {
-                alert('Error sending message. Please try again.');
-            });
-            */
-        });
-
-        // Create particles for hero section
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // Random properties
-                const size = Math.random() * 5 + 2;
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                const delay = Math.random() * 5;
-                const duration = Math.random() * 10 + 10;
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${posX}%`;
-                particle.style.top = `${posY}%`;
-                particle.style.animationDelay = `${delay}s`;
-                particle.style.animationDuration = `${duration}s`;
-                
-                particlesContainer.appendChild(particle);
-            }
+            // Virtual tour
+            initVirtualTour();
         }
 
-        // Initialize Three.js for 3D dumbbell
-        function initThreeJS() {
-            const container = document.getElementById('dumbbell-container');
+        // Hero Section 3D Model
+        function initHeroModel() {
+            const container = document.getElementById('model-container');
             const width = container.clientWidth;
             const height = container.clientHeight;
             
@@ -2361,7 +938,7 @@
             renderer.setSize(width, height);
             container.appendChild(renderer.domElement);
             
-            // Create dumbbell
+            // Create dumbbell model
             const geometry = new THREE.CylinderGeometry(0.5, 0.5, 3, 32);
             const material = new THREE.MeshPhongMaterial({ 
                 color: 0xd4af37,
@@ -2403,9 +980,674 @@
             });
         }
 
+        // Dumbbell Model
+        function initDumbbellModel() {
+            const container = document.getElementById('dumbbell-model');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            
+            // Create scene
+            const scene = new THREE.Scene();
+            
+            // Create camera
+            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.z = 5;
+            
+            // Create renderer
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+            
+            // Create dumbbell model
+            const barGeometry = new THREE.CylinderGeometry(0.1, 0.1, 3, 32);
+            const weightGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.5, 32);
+            
+            const metalMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xaaaaaa,
+                shininess: 100,
+                specular: 0xffffff
+            });
+            
+            const rubberMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x333333,
+                shininess: 30,
+                specular: 0x111111
+            });
+            
+            const bar = new THREE.Mesh(barGeometry, metalMaterial);
+            scene.add(bar);
+            
+            // Create weights
+            const weight1 = new THREE.Mesh(weightGeometry, rubberMaterial);
+            weight1.position.y = 1.75;
+            scene.add(weight1);
+            
+            const weight2 = new THREE.Mesh(weightGeometry, rubberMaterial);
+            weight2.position.y = -1.75;
+            scene.add(weight2);
+            
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+            
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                bar.rotation.y += 0.01;
+                weight1.rotation.y += 0.01;
+                weight2.rotation.y += 0.01;
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                
+                renderer.setSize(width, height);
+            });
+        }
+
+        // Barbell Model
+        function initBarbellModel() {
+            const container = document.getElementById('barbell-model');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            
+            // Create scene
+            const scene = new THREE.Scene();
+            
+            // Create camera
+            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.z = 8;
+            
+            // Create renderer
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+            
+            // Create barbell model
+            const barGeometry = new THREE.CylinderGeometry(0.1, 0.1, 6, 32);
+            const weightGeometry = new THREE.CylinderGeometry(0.8, 0.8, 0.5, 32);
+            const collarGeometry = new THREE.CylinderGeometry(0.15, 0.15, 0.2, 32);
+            
+            const metalMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xaaaaaa,
+                shininess: 100,
+                specular: 0xffffff
+            });
+            
+            const rubberMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x333333,
+                shininess: 30,
+                specular: 0x111111
+            });
+            
+            const bar = new THREE.Mesh(barGeometry, metalMaterial);
+            scene.add(bar);
+            
+            // Create weights and collars
+            const weight1 = new THREE.Mesh(weightGeometry, rubberMaterial);
+            weight1.position.y = 3.1;
+            scene.add(weight1);
+            
+            const weight2 = new THREE.Mesh(weightGeometry, rubberMaterial);
+            weight2.position.y = -3.1;
+            scene.add(weight2);
+            
+            const collar1 = new THREE.Mesh(collarGeometry, metalMaterial);
+            collar1.position.y = 2.8;
+            scene.add(collar1);
+            
+            const collar2 = new THREE.Mesh(collarGeometry, metalMaterial);
+            collar2.position.y = -2.8;
+            scene.add(collar2);
+            
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+            
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                bar.rotation.x += 0.005;
+                weight1.rotation.x += 0.005;
+                weight2.rotation.x += 0.005;
+                collar1.rotation.x += 0.005;
+                collar2.rotation.x += 0.005;
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                
+                renderer.setSize(width, height);
+            });
+        }
+
+        // Treadmill Model
+        function initTreadmillModel() {
+            const container = document.getElementById('treadmill-model');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            
+            // Create scene
+            const scene = new THREE.Scene();
+            
+            // Create camera
+            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.z = 8;
+            camera.position.y = 2;
+            
+            // Create renderer
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+            
+            // Create treadmill model
+            const baseGeometry = new THREE.BoxGeometry(4, 0.5, 2);
+            const consoleGeometry = new THREE.BoxGeometry(1, 1.5, 0.5);
+            const beltGeometry = new THREE.BoxGeometry(3.5, 0.1, 1.5);
+            
+            const metalMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x333333,
+                shininess: 50,
+                specular: 0x555555
+            });
+            
+            const plasticMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x666666,
+                shininess: 30,
+                specular: 0x222222
+            });
+            
+            const rubberMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x111111,
+                shininess: 10,
+                specular: 0x111111
+            });
+            
+            const screenMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x0000aa,
+                emissive: 0x0000ff,
+                emissiveIntensity: 0.2,
+                shininess: 90,
+                specular: 0xffffff
+            });
+            
+            // Base
+            const base = new THREE.Mesh(baseGeometry, metalMaterial);
+            base.position.y = -0.25;
+            scene.add(base);
+            
+            // Console
+            const console = new THREE.Mesh(consoleGeometry, plasticMaterial);
+            console.position.set(0, 0.75, -0.75);
+            scene.add(console);
+            
+            // Screen
+            const screen = new THREE.Mesh(
+                new THREE.BoxGeometry(0.8, 0.6, 0.1),
+                screenMaterial
+            );
+            screen.position.set(0, 1.1, -1);
+            scene.add(screen);
+            
+            // Belt
+            const belt = new THREE.Mesh(beltGeometry, rubberMaterial);
+            belt.position.set(0, 0.1, 0.25);
+            scene.add(belt);
+            
+            // Handrails
+            const leftRail = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.05, 0.05, 1, 16),
+                metalMaterial
+            );
+            leftRail.position.set(-0.8, 0.5, -0.5);
+            leftRail.rotation.z = Math.PI / 2;
+            scene.add(leftRail);
+            
+            const rightRail = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.05, 0.05, 1, 16),
+                metalMaterial
+            );
+            rightRail.position.set(0.8, 0.5, -0.5);
+            rightRail.rotation.z = Math.PI / 2;
+            scene.add(rightRail);
+            
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+            
+            const pointLight = new THREE.PointLight(0xffffff, 0.5);
+            pointLight.position.set(0, 2, 2);
+            scene.add(pointLight);
+            
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                belt.position.z += 0.02;
+                if (belt.position.z > 0.5) belt.position.z = -0.5;
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                
+                renderer.setSize(width, height);
+            });
+        }
+
+        // Virtual Tour
+        function initVirtualTour() {
+            const container = document.getElementById('tour-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            
+            // Create scene
+            const scene = new THREE.Scene();
+            
+            // Create camera
+            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.set(0, 1.6, 0);
+            
+            // Create renderer
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+            
+            // Add orbit controls
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableZoom = false;
+            controls.enablePan = false;
+            controls.rotateSpeed = 0.3;
+            
+            // Create gym environment
+            createGymEnvironment(scene);
+            
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+            
+            // Tour positions
+            const tourPositions = [
+                { x: 0, y: 1.6, z: 0, lookAt: { x: 0, y: 1.6, z: -1 } }, // Entrance
+                { x: 3, y: 1.6, z: 0, lookAt: { x: 3, y: 1.6, z: -1 } }, // Cardio area
+                { x: -3, y: 1.6, z: 0, lookAt: { x: -3, y: 1.6, z: -1 } }, // Weight area
+                { x: 0, y: 1.6, z: 3, lookAt: { x: 0, y: 1.6, z: 2 } } // Group class area
+            ];
+            
+            let currentPosition = 0;
+            
+            // Tour navigation
+            document.getElementById('tour-next').addEventListener('click', function() {
+                currentPosition = (currentPosition + 1) % tourPositions.length;
+                updateTourPosition();
+            });
+            
+            document.getElementById('tour-prev').addEventListener('click', function() {
+                currentPosition = (currentPosition - 1 + tourPositions.length) % tourPositions.length;
+                updateTourPosition();
+            });
+            
+            function updateTourPosition() {
+                const pos = tourPositions[currentPosition];
+                gsap.to(camera.position, {
+                    x: pos.x,
+                    y: pos.y,
+                    z: pos.z,
+                    duration: 1,
+                    ease: "power2.inOut"
+                });
+                
+                controls.target.set(pos.lookAt.x, pos.lookAt.y, pos.lookAt.z);
+                controls.update();
+            }
+            
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                
+                renderer.setSize(width, height);
+            });
+        }
+
+        function createGymEnvironment(scene) {
+            // Floor
+            const floorGeometry = new THREE.PlaneGeometry(20, 20);
+            const floorMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x333333,
+                roughness: 0.8,
+                metalness: 0.2
+            });
+            const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+            floor.rotation.x = -Math.PI / 2;
+            scene.add(floor);
+            
+            // Walls
+            const wallGeometry = new THREE.PlaneGeometry(20, 5);
+            const wallMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x555555,
+                roughness: 0.7,
+                metalness: 0.1
+            });
+            
+            const backWall = new THREE.Mesh(wallGeometry, wallMaterial);
+            backWall.position.set(0, 2.5, -10);
+            scene.add(backWall);
+            
+            const leftWall = new THREE.Mesh(wallGeometry, wallMaterial);
+            leftWall.position.set(-10, 2.5, 0);
+            leftWall.rotation.y = Math.PI / 2;
+            scene.add(leftWall);
+            
+            const rightWall = new THREE.Mesh(wallGeometry, wallMaterial);
+            rightWall.position.set(10, 2.5, 0);
+            rightWall.rotation.y = Math.PI / 2;
+            scene.add(rightWall);
+            
+            const frontWall = new THREE.Mesh(wallGeometry, wallMaterial);
+            frontWall.position.set(0, 2.5, 10);
+            scene.add(frontWall);
+            
+            // Mirrors on walls
+            const mirrorMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xaaaaaa,
+                roughness: 0.1,
+                metalness: 0.9
+            });
+            
+            const mirrorGeometry = new THREE.PlaneGeometry(15, 3);
+            const mirror = new THREE.Mesh(mirrorGeometry, mirrorMaterial);
+            mirror.position.set(0, 1.5, -9.9);
+            scene.add(mirror);
+            
+            // Gym equipment (simplified)
+            createGymEquipment(scene);
+            
+            // Ceiling lights
+            for (let i = -8; i <= 8; i += 4) {
+                for (let j = -8; j <= 8; j += 4) {
+                    const light = new THREE.PointLight(0xffffff, 0.8, 10);
+                    light.position.set(i, 4.5, j);
+                    scene.add(light);
+                    
+                    const lightGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+                    const lightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+                    const lightBulb = new THREE.Mesh(lightGeometry, lightMaterial);
+                    lightBulb.position.set(i, 4.5, j);
+                    scene.add(lightBulb);
+                }
+            }
+        }
+
+        function createGymEquipment(scene) {
+            // Cardio area (right side)
+            createTreadmill(scene, 5, 0, -3);
+            createElliptical(scene, 5, 0, -5);
+            createStationaryBike(scene, 5, 0, -7);
+            
+            // Weight area (left side)
+            createWeightBench(scene, -5, 0, -3);
+            createSquatRack(scene, -5, 0, -5);
+            createDumbbellRack(scene, -7, 0, -7);
+            
+            // Group class area (front)
+            createYogaMats(scene, 0, 0, 5);
+        }
+
+        function createTreadmill(scene, x, y, z) {
+            const baseGeometry = new THREE.BoxGeometry(2, 0.2, 1);
+            const baseMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
+            const base = new THREE.Mesh(baseGeometry, baseMaterial);
+            base.position.set(x, y, z);
+            scene.add(base);
+            
+            const consoleGeometry = new THREE.BoxGeometry(0.5, 1, 0.2);
+            const consoleMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
+            const console = new THREE.Mesh(consoleGeometry, consoleMaterial);
+            console.position.set(x, y + 0.6, z - 0.4);
+            scene.add(console);
+            
+            const beltGeometry = new THREE.BoxGeometry(1.8, 0.05, 0.8);
+            const beltMaterial = new THREE.MeshStandardMaterial({ color: 0x111111 });
+            const belt = new THREE.Mesh(beltGeometry, beltMaterial);
+            belt.position.set(x, y + 0.1, z + 0.1);
+            scene.add(belt);
+        }
+
+        function createElliptical(scene, x, y, z) {
+            const baseGeometry = new THREE.BoxGeometry(1.5, 0.2, 3);
+            const baseMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
+            const base = new THREE.Mesh(baseGeometry, baseMaterial);
+            base.position.set(x, y, z);
+            scene.add(base);
+            
+            const pedalGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.1, 16);
+            const pedalMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
+            
+            const leftPedal = new THREE.Mesh(pedalGeometry, pedalMaterial);
+            leftPedal.position.set(x - 0.5, y + 0.5, z);
+            leftPedal.rotation.x = Math.PI / 2;
+            scene.add(leftPedal);
+            
+            const rightPedal = new THREE.Mesh(pedalGeometry, pedalMaterial);
+            rightPedal.position.set(x + 0.5, y + 0.5, z);
+            rightPedal.rotation.x = Math.PI / 2;
+            scene.add(rightPedal);
+            
+            const consoleGeometry = new THREE.BoxGeometry(0.5, 1, 0.2);
+            const consoleMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
+            const console = new THREE.Mesh(consoleGeometry, consoleMaterial);
+            console.position.set(x, y + 0.6, z - 1.3);
+            scene.add(console);
+        }
+
+        function createStationaryBike(scene, x, y, z) {
+            const baseGeometry = new THREE.BoxGeometry(1, 0.2, 2);
+            const baseMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
+            const base = new THREE.Mesh(baseGeometry, baseMaterial);
+            base.position.set(x, y, z);
+            scene.add(base);
+            
+            const seatGeometry = new THREE.BoxGeometry(0.3, 0.1, 0.4);
+            const seatMaterial = new THREE.MeshStandardMaterial({ color: 0x111111 });
+            const seat = new THREE.Mesh(seatGeometry, seatMaterial);
+            seat.position.set(x, y + 0.5, z + 0.5);
+            scene.add(seat);
+            
+            const wheelGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.1, 16);
+            const wheelMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
+            const wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
+            wheel.position.set(x, y + 0.5, z - 0.5);
+            wheel.rotation.x = Math.PI / 2;
+            scene.add(wheel);
+            
+            const handleGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.8, 16);
+            const handleMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
+            const handle = new THREE.Mesh(handleGeometry, handleMaterial);
+            handle.position.set(x, y + 0.8, z - 0.5);
+            handle.rotation.z = Math.PI / 4;
+            scene.add(handle);
+        }
+
+        function createWeightBench(scene, x, y, z) {
+            const baseGeometry = new THREE.BoxGeometry(1.5, 0.1, 0.8);
+            const baseMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
+            const base = new THREE.Mesh(baseGeometry, baseMaterial);
+            base.position.set(x, y + 0.05, z);
+            scene.add(base);
+            
+            const backGeometry = new THREE.BoxGeometry(1.5, 0.5, 0.1);
+            const backMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
+            const back = new THREE.Mesh(backGeometry, backMaterial);
+            back.position.set(x, y + 0.3, z - 0.35);
+            back.rotation.x = Math.PI / 6;
+            scene.add(back);
+            
+            const supportGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.8, 16);
+            const supportMaterial = new THREE.MeshStandardMaterial({ color: 0x444444 });
+            
+            const leftSupport = new THREE.Mesh(supportGeometry, supportMaterial);
+            leftSupport.position.set(x - 0.6, y + 0.4, z + 0.2);
+            scene.add(leftSupport);
+            
+            const rightSupport = new THREE.Mesh(supportGeometry, supportMaterial);
+            rightSupport.position.set(x + 0.6, y + 0.4, z + 0.2);
+            scene.add(rightSupport);
+        }
+
+        function createSquatRack(scene, x, y, z) {
+            const frameGeometry = new THREE.BoxGeometry(0.1, 2, 0.1);
+            const frameMaterial = new THREE.MeshStandardMaterial({ color: 0x444444 });
+            
+            // Vertical posts
+            const leftPost = new THREE.Mesh(frameGeometry, frameMaterial);
+            leftPost.position.set(x - 0.5, y + 1, z);
+            scene.add(leftPost);
+            
+            const rightPost = new THREE.Mesh(frameGeometry, frameMaterial);
+            rightPost.position.set(x + 0.5, y + 1, z);
+            scene.add(rightPost);
+            
+            // Horizontal bars
+            const topBar = new THREE.Mesh(
+                new THREE.BoxGeometry(1, 0.1, 0.1),
+                frameMaterial
+            );
+            topBar.position.set(x, y + 2, z);
+            scene.add(topBar);
+            
+            const bottomBar = new THREE.Mesh(
+                new THREE.BoxGeometry(1, 0.1, 0.1),
+                frameMaterial
+            );
+            bottomBar.position.set(x, y + 0.5, z);
+            scene.add(bottomBar);
+            
+            // Safety bars
+            const safetyBar = new THREE.Mesh(
+                new THREE.BoxGeometry(1, 0.05, 0.05),
+                new THREE.MeshStandardMaterial({ color: 0x555555 })
+            );
+            safetyBar.position.set(x, y + 0.8, z - 0.2);
+            scene.add(safetyBar);
+        }
+
+        function createDumbbellRack(scene, x, y, z) {
+            const rackGeometry = new THREE.BoxGeometry(1, 1, 0.5);
+            const rackMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
+            const rack = new THREE.Mesh(rackGeometry, rackMaterial);
+            rack.position.set(x, y + 0.5, z);
+            scene.add(rack);
+            
+            // Dumbbells
+            for (let i = 0; i < 5; i++) {
+                const dumbbell = createSimpleDumbbell();
+                dumbbell.position.set(x - 0.4 + i * 0.2, y + 0.7, z);
+                scene.add(dumbbell);
+            }
+        }
+
+        function createSimpleDumbbell() {
+            const group = new THREE.Group();
+            
+            const barGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.6, 16);
+            const barMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
+            const bar = new THREE.Mesh(barGeometry, barMaterial);
+            bar.rotation.x = Math.PI / 2;
+            group.add(bar);
+            
+            const weightGeometry = new THREE.CylinderGeometry(0.15, 0.15, 0.2, 16);
+            const weightMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
+            
+            const leftWeight = new THREE.Mesh(weightGeometry, weightMaterial);
+            leftWeight.position.set(-0.3, 0, 0);
+            leftWeight.rotation.x = Math.PI / 2;
+            group.add(leftWeight);
+            
+            const rightWeight = new THREE.Mesh(weightGeometry, weightMaterial);
+            rightWeight.position.set(0.3, 0, 0);
+            rightWeight.rotation.x = Math.PI / 2;
+            group.add(rightWeight);
+            
+            return group;
+        }
+
+        function createYogaMats(scene, x, y, z) {
+            const matGeometry = new THREE.BoxGeometry(2, 0.02, 0.8);
+            const matMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x4477aa,
+                roughness: 0.8,
+                metalness: 0.1
+            });
+            
+            for (let i = -2; i <= 2; i += 1) {
+                for (let j = -2; j <= 2; j += 1) {
+                    const mat = new THREE.Mesh(matGeometry, matMaterial);
+                    mat.position.set(x + i * 2.2, y + 0.01, z + j * 1.2);
+                    mat.rotation.y = Math.PI / 2;
+                    scene.add(mat);
+                }
+            }
+        }
+
         // Initialize GSAP animations
         function initAnimations() {
-            // Animate elements on scroll
             gsap.registerPlugin(ScrollTrigger);
             
             // Animate sections when they come into view
@@ -2423,9 +1665,9 @@
             });
             
             // Animate cards with stagger effect
-            gsap.from('.class-card, .plan-card', {
+            gsap.from('.equipment-card, .plan-card', {
                 scrollTrigger: {
-                    trigger: '#classes',
+                    trigger: '#equipment',
                     start: "top 80%",
                     toggleActions: "play none none none"
                 },
@@ -2434,58 +1676,12 @@
                 stagger: 0.2,
                 duration: 0.8
             });
-            
-            // Animate diet and workout cards
-            gsap.from('.diet-card, .workout-card', {
-                scrollTrigger: {
-                    trigger: '#diet',
-                    start: "top 80%",
-                    toggleActions: "play none none none"
-                },
-                opacity: 0,
-                y: 50,
-                stagger: 0.3,
-                duration: 1
-            });
-        }
-
-        // Create sparkle effect on logo hover
-        function initSparkleEffect() {
-            const logoContainer = document.querySelector('.logo-container');
-            
-            logoContainer.addEventListener('mousemove', function(e) {
-                const rect = logoContainer.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const sparkle = document.createElement('div');
-                sparkle.classList.add('sparkle');
-                sparkle.style.left = `${x}px`;
-                sparkle.style.top = `${y}px`;
-                
-                logoContainer.appendChild(sparkle);
-                
-                // Animate sparkle
-                gsap.to(sparkle, {
-                    x: 'random(-20, 20)',
-                    y: 'random(-20, 20)',
-                    opacity: 1,
-                    scale: 'random(1, 3)',
-                    duration: 'random(0.5, 1)',
-                    ease: 'power2.out',
-                    onComplete: function() {
-                        sparkle.remove();
-                    }
-                });
-            });
         }
 
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
             initThreeJS();
             initAnimations();
-            initSparkleEffect();
         });
     </script>
 </body>
