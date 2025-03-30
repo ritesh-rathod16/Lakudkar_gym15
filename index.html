@@ -1,0 +1,2034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakudkar Gym - Transform Your Fitness Journey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --primary: #121212;
+            --secondary: #1a1a1a;
+            --accent: #d4af37;
+            --accent-dark: #b59430;
+            --text: #e0e0e0;
+            --text-light: #a0a0a0;
+            --card-bg: rgba(26, 26, 26, 0.8);
+            --card-border: rgba(212, 175, 55, 0.2);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: url('https://i.pinimg.com/736x/de/8f/57/de8f579651b2e0a6cddbd359182f95ad.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text);
+            position: relative;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--accent-dark);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+            margin: 15px auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+        }
+
+        .logo-animation {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .logo-animation img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.7));
+            animation: pulse 2s infinite, rotate 8s linear infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .welcome-text {
+            font-size: 1.5rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeInOut 2s infinite;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 0;
+            background-color: rgba(18, 18, 18, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        header.scrolled {
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            font-weight: 500;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--text-light);
+            animation: fadeInUp 1s ease 0.2s forwards;
+            opacity: 0;
+        }
+
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            animation: fadeInUp 1s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.8;
+        }
+
+        /* 3D Floating Dumbbells */
+        #dumbbell-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Membership Plans */
+        .membership-plans {
+            background-color: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 80px 0;
+        }
+
+        .plans-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .plan-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid var(--card-border);
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);
+        }
+
+        .plan-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .plan-card:hover .plan-card-inner {
+            transform: rotateY(10deg) rotateX(5deg);
+        }
+
+        .plan-card-header {
+            padding: 30px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .plan-card-header h3 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .plan-card-body {
+            padding: 30px;
+        }
+
+        .plan-features {
+            margin-bottom: 30px;
+        }
+
+        .plan-features li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .plan-btn {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Class Schedules */
+        .class-schedules {
+            padding: 80px 0;
+        }
+
+        .schedule-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .schedule-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .schedule-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .schedule-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .schedule-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        .schedule-table th, .schedule-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .schedule-table th {
+            background-color: rgba(212, 175, 55, 0.1);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .schedule-table tr:hover {
+            background-color: rgba(212, 175, 55, 0.05);
+        }
+
+        /* Diet Plan */
+        .diet-plan {
+            padding: 80px 0;
+            background-color: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        .diet-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .diet-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .diet-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .diet-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .diet-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .diet-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+
+        .diet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);
+        }
+
+        .diet-card h3 {
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .diet-card ul {
+            margin-bottom: 20px;
+        }
+
+        .diet-card li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .diet-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--secondary);
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 800px;
+            position: relative;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            background-image: url('https://i.pinimg.com/474x/65/1f/00/651f00fd2fdf4d3774ce93711ae8b866.jpg');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 26, 26, 0.9);
+            z-index: -1;
+            border-radius: 10px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: var(--accent);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            transform: rotate(90deg);
+        }
+
+        /* Workout Routine */
+        .workout-routine {
+            padding: 80px 0;
+        }
+
+        .workout-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .workout-card {
+            flex: 1;
+            min-width: 300px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 30px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .workout-card:hover {
+            transform: translateY(-10px) rotateY(5deg);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);
+        }
+
+        .workout-card h3 {
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .workout-card p {
+            margin-bottom: 20px;
+        }
+
+        .workout-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .workout-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .workout-card:hover .workout-image img {
+            transform: scale(1.05);
+        }
+
+        /* Location */
+        .location {
+            padding: 80px 0;
+            background-color: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        .location-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .map-container {
+            flex: 2;
+            min-width: 300px;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .location-info {
+            flex: 1;
+            min-width: 300px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 30px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .location-info h3 {
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .hours-list {
+            list-style: none;
+        }
+
+        .hours-list li {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .hours-list li:last-child {
+            border-bottom: none;
+        }
+
+        .day {
+            font-weight: 600;
+        }
+
+        .time {
+            color: var(--accent);
+        }
+
+        .parking-image {
+            width: 100%;
+            margin-top: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .parking-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Contact Form */
+        .contact {
+            padding: 80px 0;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 50px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 4px;
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            grid-column: span 2;
+            justify-self: center;
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(18, 18, 18, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 60px 0 20px;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .footer-col p {
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--accent);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .quick-links {
+            list-style: none;
+        }
+
+        .quick-links li {
+            margin-bottom: 10px;
+        }
+
+        .quick-links a {
+            color: var(--text-light);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+
+        .quick-links a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .quick-links a i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Chatbot */
+        .chatbot-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .chatbot-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-container {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            background: var(--secondary);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            border: 1px solid var(--accent);
+        }
+
+        .chatbot-container.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .chatbot-header {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-header h3 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .close-chatbot {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .chatbot-messages {
+            height: 300px;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .bot-message {
+            background: rgba(212, 175, 55, 0.1);
+            border-top-left-radius: 0;
+            margin-right: auto;
+        }
+
+        .user-message {
+            background: var(--accent);
+            color: var(--primary);
+            border-top-right-radius: 0;
+            margin-left: auto;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+            margin-right: 10px;
+        }
+
+        .chatbot-input button {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chatbot-input button:hover {
+            background: var(--accent-dark);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: rgba(18, 18, 18, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 20px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+                transform: translateY(-150%);
+                opacity: 0;
+                transition: var(--transition);
+                z-index: 999;
+            }
+
+            nav.active {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 15px 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .contact-form {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+
+            .submit-btn {
+                grid-column: span 1;
+            }
+
+            .chatbot-container {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .logo-text {
+                font-size: 1.5rem;
+            }
+
+            .logo-img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .contact-container {
+                padding: 30px;
+            }
+
+            .chatbot-container {
+                width: 280px;
+                right: 15px;
+            }
+
+            .chatbot-btn {
+                right: 15px;
+                bottom: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="logo-animation">
+            <img src="https://media-hosting.imagekit.io/c1ab74a3f47f431f/gym%20logo.jpg" alt="Lakudkar Gym Logo">
+        </div>
+        <div class="welcome-text">Welcome to Lakudkar Gym</div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <div class="logo-container">
+                <img src="https://media-hosting.imagekit.io/c1ab74a3f47f431f/gym%20logo.jpg" alt="Lakudkar Gym Logo" class="logo-img">
+                <span class="logo-text">Lakudkar Gym</span>
+            </div>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#membership">Membership Plans</a></li>
+                    <li><a href="#location">Location</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div id="dumbbell-container"></div>
+        <img src="https://i.pinimg.com/736x/f5/51/48/f55148ad2ef92de8597008b60bcd29a8.jpg" alt="Gym Interior" class="hero-image">
+        <div class="hero-content">
+            <h1>Transform Your Fitness Journey Today!</h1>
+            <p>Personalized Training • Expert Coaches • Results Guaranteed</p>
+            <div class="hero-btns">
+                <a href="#membership" class="btn">Join Now</a>
+                <a href="#contact" class="btn btn-outline">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Plans -->
+    <section class="membership-plans" id="membership">
+        <div class="container">
+            <h2 class="section-title reveal">Membership Plans</h2>
+            <div class="plans-container">
+                <div class="plan-card reveal">
+                    <div class="plan-card-inner">
+                        <div class="plan-card-header">
+                            <h3>Gym</h3>
+                        </div>
+                        <div class="plan-card-body">
+                            <ul class="plan-features">
+                                <li>🏋️‍♂️ STRENGTH TRAINING - Build muscle with free weights & machines</li>
+                                <li>⚡ FUNCTIONAL & CROSSFIT TRAINING - HIIT workouts, Battle ropes, kettlebells</li>
+                                <li>📊 CUSTOMIZED WORKOUT PLANNING & MONITORING</li>
+                                <li>🍎 CUSTOMIZED DIET & NUTRITION CONSULTATION</li>
+                            </ul>
+                            <div class="plan-price">₹1,500 <span>/month</span></div>
+                            <a href="#contact" class="btn plan-btn">Join Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="plan-card reveal delay-1">
+                    <div class="plan-card-inner">
+                        <div class="plan-card-header">
+                            <h3>Dance</h3>
+                        </div>
+                        <div class="plan-card-body">
+                            <ul class="plan-features">
+                                <li>🕺 No experience needed – Beginners welcome!</li>
+                                <li>🌍 Learn global dance styles – From Bollywood to Hip-Hop!</li>
+                                <li>💃 Feel the rhythm – Groove to upbeat music!</li>
+                                <li>💪 Full-body workout – Burn calories while having fun!</li>
+                                <li>👯 Meet dance lovers – Join a friendly community!</li>
+                            </ul>
+                            <div class="plan-price">₹1,500 <span>/month</span></div>
+                            <a href="#contact" class="btn plan-btn">Join Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="plan-card reveal delay-2">
+                    <div class="plan-card-inner">
+                        <div class="plan-card-header">
+                            <h3>Calisthenics</h3>
+                        </div>
+                        <div class="plan-card-body">
+                            <ul class="plan-features">
+                                <li>💪 Calisthenics Training – Transform Your Body with Bodyweight Mastery!</li>
+                                <li>🔥 No Gym? No Problem! Build strength, flexibility, and endurance</li>
+                                <li>✅ Full-Body Strength – Push-ups, Pull-ups, Dips & Muscle-Ups</li>
+                                <li>🌟 Suitable for all levels (Beginner to Athlete)</li>
+                                <li>📅 Small Group Coaching with Personalized attention</li>
+                            </ul>
+                            <div class="plan-price">₹1,500 <span>/month</span></div>
+                            <a href="#contact" class="btn plan-btn">Join Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Class Schedules -->
+    <section class="class-schedules">
+        <div class="container">
+            <h2 class="section-title reveal">Class Schedules</h2>
+            <div class="schedule-container">
+                <div class="schedule-info reveal">
+                    <h3>Our Weekly Schedule</h3>
+                    <p>We offer a variety of classes throughout the week to fit your busy schedule. Whether you're an early bird or a night owl, we have something for everyone.</p>
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Morning</th>
+                                <th>Evening</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Monday</td>
+                                <td>6:00 AM - Gym</td>
+                                <td>6:00 PM - Dance</td>
+                            </tr>
+                            <tr>
+                                <td>Tuesday</td>
+                                <td>7:00 AM - Calisthenics</td>
+                                <td>7:00 PM - Gym</td>
+                            </tr>
+                            <tr>
+                                <td>Wednesday</td>
+                                <td>6:00 AM - Gym</td>
+                                <td>6:00 PM - Dance</td>
+                            </tr>
+                            <tr>
+                                <td>Thursday</td>
+                                <td>7:00 AM - Calisthenics</td>
+                                <td>7:00 PM - Gym</td>
+                            </tr>
+                            <tr>
+                                <td>Friday</td>
+                                <td>6:00 AM - Gym</td>
+                                <td>6:00 PM - Dance</td>
+                            </tr>
+                            <tr>
+                                <td>Saturday</td>
+                                <td>8:00 AM - Calisthenics</td>
+                                <td>5:00 PM - Gym</td>
+                            </tr>
+                            <tr>
+                                <td>Sunday</td>
+                                <td colspan="2">Closed</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="schedule-image reveal delay-1">
+                    <img src="https://i.pinimg.com/736x/f7/b0/5d/f7b05d5bb3f523a73aa01efeed5be53d.jpg" alt="Gym Class">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diet Plan -->
+    <section class="diet-plan" id="diet">
+        <div class="container">
+            <h2 class="section-title reveal">Diet Plan</h2>
+            <div class="diet-container">
+                <div class="diet-image reveal">
+                    <img src="https://i.pinimg.com/474x/6c/e3/b2/6ce3b2be792cdd262d3bc338f4268687.jpg" alt="Healthy Food">
+                </div>
+                <div class="diet-info">
+                    <div class="diet-card reveal delay-1">
+                        <h3>Daily Macros (Indian Foods)</h3>
+                        <ul>
+                            <li>💪 Protein: 1.6-2.2g/kg (Eggs 🥚, Chicken 🍗, Paneer 🧀, Dal 🌱)</li>
+                            <li>⚡ Carbs: 3-5g/kg (Brown Rice �, Roti 🫓, Oats 🥣)</li>
+                            <li>🫒 Fats: 0.8-1g/kg (Ghee 🧈, Nuts 🥜, Coconut 🥥)</li>
+                            <li>⏰ Meal Timing - Pre-Workout (1-2h before) ⚡ – Carbs + protein (banana + peanut butter)</li>
+                            <li>Post-Workout (30-60min after) 💪 – Protein + carbs (chicken + rice)</li>
+                            <li>Snacks 🥜 – Nuts, Greek yogurt, protein shake</li>
+                        </ul>
+                        <button class="btn view-plan-btn" onclick="openModal('diet-modal')">View Full 7-Day Plan</button>
+                    </div>
+                    <div class="diet-card reveal delay-2">
+                        <h3>Foods to Limit & Healthy Swaps</h3>
+                        <ul>
+                            <li>🚫 Processed Sugar 🍩 – Spikes insulin</li>
+                            <li>🚫 Trans Fats 🍟 – Bad for heart</li>
+                            <li>🚫 Alcohol 🍺 – Slows recovery</li>
+                            <li>🚫 Excess Salt 🧂 – Bloating & BP issues</li>
+                            <li>✅ White rice → Brown rice 🌾</li>
+                            <li>✅ Soda → Sparkling water 🥤➡️💧</li>
+                            <li>✅ Fried chicken → Grilled chicken 🍗🔥</li>
+                            <li>✅ Candy → Dark chocolate (70%+) 🍫</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diet Plan Modal -->
+    <div id="diet-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('diet-modal')">&times;</span>
+            <h2>📅 7-Day Diet Plan</h2>
+            <div class="modal-body">
+                <div class="day-plan">
+                    <h3>Day 1 🏋️‍♂️ (Strength Training - High Protein)</h3>
+                    <p>🌅 Pre-Workout: Banana 🍌 + Peanut Butter 🥜 + Milk 🥛</p>
+                    <p>🏋️‍♂️ Post-Workout: Roti 🫓 + Chicken Curry 🍗 + Dal 🌱 + Cucumber Salad 🥒</p>
+                    <p>☕ Snack: Sprout Chaat 🌱 + Almonds 🥜</p>
+                    <p>🌙 Dinner: Brown Rice 🍚 + Fish Curry 🐟 + Bhindi Sabzi 🥗</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 2 🏃‍♂️ (HIIT - Moderate Carb)</h3>
+                    <p>🌅 Pre-Workout: Poha 🍚 + Boiled Egg 🥚</p>
+                    <p>🏃‍♂️ Post-Workout: Quinoa 🍛 + Moong Dal 🌱 + Curd 🥄</p>
+                    <p>☕ Snack: Greek Yogurt 🥣 + Chia Seeds ✨</p>
+                    <p>🌙 Dinner: Jowar Roti 🫓 + Palak Paneer 🧀 + Sprouts 🌱</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 3 🦵 (Leg Day - High Energy)</h3>
+                    <p>🌅 Pre-Workout: Oats 🥣 + Whey 💊 + Dates 🍇</p>
+                    <p>🦵 Post-Workout: Rice 🍚 + Mutton Curry 🍖 + Beetroot Salad 🥗</p>
+                    <p>☕ Snack: Chana Chaat 🌱 + Green Chutney 🍃</p>
+                    <p>🌙 Dinner: Bajra Roti 🫓 + Dal Tadka 🌱 + Mushrooms 🍄</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 4 💪 (Upper Body - Balanced)</h3>
+                    <p>🌅 Pre-Workout: Upma 🍛 + Buttermilk 🥛</p>
+                    <p>💪 Post-Workout: Roti 🫓 + Egg Bhurji 🍳 + Curd 🥄</p>
+                    <p>☕ Snack: Makhana 🍿 + Ghee 🧈</p>
+                    <p>🌙 Dinner: Khichdi 🍚 + Kadhi 🥣</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 5 🚴 (Endurance - Carb Cycling)</h3>
+                    <p>🌅 Pre-Workout: Idli 🍘 + Sambar 🍛</p>
+                    <p>🚴 Post-Workout: Brown Rice 🍚 + Grilled Fish 🐟 + Lauki Sabzi 🥗</p>
+                    <p>☕ Snack: Fruit Salad 🍉 + Walnuts 🥜</p>
+                    <p>🌙 Dinner: Missi Roti 🫓 + Dal 🌱 + Bhindi Sabzi 🥗</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 6 🧘 (Active Recovery - Low Carb)</h3>
+                    <p>🌅 Breakfast: Egg Whites 🥚 + Spinach Omelet 🍳</p>
+                    <p>🍽️ Lunch: Quinoa 🍛 + Chana Masala 🌱 + Cucumber Raita 🥒</p>
+                    <p>☕ Snack: Coconut Water 🥥 + Pumpkin Seeds 🎃</p>
+                    <p>🌙 Dinner: Tofu 🧈 + Mushroom Soup 🍄</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 7 🛌 (Rest Day - Flexible)</h3>
+                    <p>🍳 Brunch: Dosa � + Sambar 🍛 + Flaxseed Chutney ✨</p>
+                    <p>☕ Snack: Lassi 🥛 + Sunflower Seeds 🌻</p>
+                    <p>Muscle Gain 💪: Add ghee 🧈 or extra eggs 🥚.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workout Routine -->
+    <section class="workout-routine">
+        <div class="container">
+            <h2 class="section-title reveal">Daily Workout Routine</h2>
+            <div class="workout-container">
+                <div class="workout-card reveal">
+                    <div class="workout-image">
+                        <img src="https://i.pinimg.com/474x/b0/3c/e5/b03ce54af40c1ff0682db0e0221737d1.jpg" alt="Gym Workout">
+                    </div>
+                    <h3>Gym Workout</h3>
+                    <p>🏋️‍♂️ 6-Day Gym Workout Split</p>
+                    <p>Goal: Build muscle 💪, strength 🔥 & endurance 🏃‍♂️</p>
+                    <p>Rest Day: Sunday 🧘 (active recovery: yoga/walking)</p>
+                    <button class="btn view-plan-btn" onclick="openModal('gym-workout-modal')">View 6-Day Gym Workout Split</button>
+                </div>
+                <div class="workout-card reveal delay-1">
+                    <div class="workout-image">
+                        <img src="https://i.pinimg.com/736x/f4/81/51/f48151613d6c1b329c50e38ea78693f0.jpg" alt="Calisthenics Workout">
+                    </div>
+                    <h3>Calisthenics</h3>
+                    <p>🏋️‍♂️ 6-Day Calisthenics Plan</p>
+                    <p>Goal: Build strength 💪, muscle 🏋️‍♂️, and mobility 🧘‍♂️</p>
+                    <p>Rest Day: Sunday (active recovery: yoga/stretching) 🧘‍♀️</p>
+                    <button class="btn view-plan-btn" onclick="openModal('calisthenics-modal')">View 6-Day Calisthenics Plan</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gym Workout Modal -->
+    <div id="gym-workout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('gym-workout-modal')">&times;</span>
+            <h2>🏋️‍♂️ 6-Day Gym Workout Split</h2>
+            <div class="modal-body">
+                <div class="day-plan">
+                    <h3>Day 1️⃣ (Monday): Chest & Triceps</h3>
+                    <p>Flat Bench Press – 4x6-8 🏋️‍♂️</p>
+                    <p>Incline Dumbbell Press – 3x8-10 🏋️‍♀️</p>
+                    <p>Cable Flys – 3x12 ✨</p>
+                    <p>Triceps Dips – 3xMAX 💪</p>
+                    <p>Skull Crushers – 3x10-12 🦾</p>
+                    <p>(Finish: 10 min incline treadmill walk 🚶‍♂️)</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 2️⃣ (Tuesday): Back & Biceps</h3>
+                    <p>Pull-Ups – 4x6-8 (add weight if advanced) 🏋️‍♂️</p>
+                    <p>Barbell Rows – 3x8-10 🏋️‍♀️</p>
+                    <p>Lat Pulldown – 3x10-12 🔄</p>
+                    <p>Deadlifts – 3x5 (heavy!) ⚡</p>
+                    <p>Hammer Curls – 3x12 💥</p>
+                    <p>(Stretch: 5 min lats/biceps 🧘)</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 3️⃣ (Wednesday): Legs (Quads Focus)</h3>
+                    <p>Squats – 4x6-8 🦵</p>
+                    <p>Bulgarian Split Squats – 3x8/leg 🏋️‍♀️</p>
+                    <p>Leg Press – 3x10-12 🚂</p>
+                    <p>Leg Extensions – 3x15 (slow!) 🐢</p>
+                    <p>Calf Raises – 4x15 👟</p>
+                    <p>(Cool down: 5 min bike 🚴‍♂️)</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 4️⃣ (Thursday): Shoulders & Abs</h3>
+                    <p>Overhead Press – 4x6-8 🏋️‍♂️</p>
+                    <p>Lateral Raises – 3x12-15 ✈️</p>
+                    <p>Face Pulls – 3x15 🔄</p>
+                    <p>Hanging Leg Raises – 3x12-15 🦵</p>
+                    <p>Russian Twists – 3x20/side 🔄</p>
+                    <p>(Finish: 10 min rowing 🚣‍♂️)</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 5️⃣ (Friday): Arms (Hypertrophy)</h3>
+                    <p>Close-Grip Bench – 3x10-12 🏋️‍♂️</p>
+                    <p>EZ Bar Curls – 3x10-12 💪</p>
+                    <p>Triceps Rope Pushdown – 3x12-15 🦾</p>
+                    <p>Preacher Curls – 3x12 🔥</p>
+                    <p>(Superset biceps/triceps for pump! 💥)</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 6️⃣ (Saturday): Legs (Hamstrings/Glutes) + HIIT</h3>
+                    <p>Romanian Deadlifts – 4x8 🏋️‍♀️</p>
+                    <p>Hip Thrusts – 3x10-12 🍑</p>
+                    <p>Leg Curls – 3x12-15 🦵</p>
+                    <p>Farmer's Walk – 3x30 sec 🚶‍♂️</p>
+                    <p>HIIT Finisher:</p>
+                    <p>30 sec Sprint / 30 sec Walk – 8 rounds ⚡</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calisthenics Modal -->
+    <div id="calisthenics-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('calisthenics-modal')">&times;</span>
+            <h2>🏋️‍♂️ 6-Day Calisthenics Plan</h2>
+            <div class="modal-body">
+                <div class="day-plan">
+                    <h3>Day 1️⃣ (Monday): Upper Body Push</h3>
+                    <p>Push-Ups – 4x12-15 🏋️‍♂️ (slow, full range)</p>
+                    <p>Pike Push-Ups – 3x8-10 ✋ (shoulder focus)</p>
+                    <p>Dips (Parallel Bars/Chair) – 3x8-10 🔄</p>
+                    <p>Handstand Holds – 3x20-30 sec ⏳ (against wall)</p>
+                    <p>Triceps Extensions – 3x10-12 🦾</p>
+                    <p>(Finish: 5 min wrist mobility drills ✋)</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 2️⃣ (Tuesday): Upper Body Pull</h3>
+                    <p>Pull-Ups – 4x6-8 🏋️‍♂️ (strict form)</p>
+                    <p>Bodyweight Rows (Table/TRX) – 3x10-12 🔄</p>
+                    <p>Archer Rows – 3x6/side 🎯 (scaled: feet on ground)</p>
+                    <p>Hanging Leg Raises – 3x12-15 🦵</p>
+                    <p>Plank to Failure – 3xMAX ⏳</p>
+                    <p>(Stretch: 5 min lats & biceps 🧘‍♂️)</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 3️⃣ (Wednesday): Legs & Core</h3>
+                    <p>Pistol Squats – 3x5/side 🦵 (assisted if needed)</p>
+                    <p>Jump Squats – 3x12-15 ⚡</p>
+                    <p>Nordic Hamstring Curls – 3x6-8 🏋️‍♀️ (slow negatives)</p>
+                    <p>L-Sit Holds – 3x15-20 sec ⏳ (tucked if advanced)</p>
+                    <p>Dragon Flags – 3x6-8 🐉 (scaled: negatives)</p>
+                    <p>(Cool down: 5 min hip stretches 🧘‍♀️)</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 4️⃣ (Thursday): Skill & Mobility</h3>
+                    <p>Handstand Practice – 10 min ✋ (wall holds/kicks)</p>
+                    <p>Front Lever Progressions – 3x8-10 sec 🏋️‍♂️ (tuck/adv. tuck)</p>
+                    <p>Planche Lean Holds – 3x20-30 sec ⏳</p>
+                    <p>Skin the Cat – 3x5 🔄 (shoulder mobility)</p>
+                    <p>Bridge Holds – 3x20 sec 🌉</p>
+                    <p>(Focus: Form over reps! 👀)</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 5️⃣ (Friday): Full Body HIIT</h3>
+                    <p>Burpees – 4x10 ⚡</p>
+                    <p>Mountain Climbers – 3x20/side 🏔️</p>
+                    <p>Explosive Push-Ups – 3x8 💥</p>
+                    <p>Jump Lunges – 3x12/side 🦵</p>
+                    <p>Plank Jacks – 3x30 sec ⏳</p>
+                    <p>(Finisher: 5 min jump rope 🏃‍♂️)</p>
+                </div>
+                <div class="day-plan">
+                    <h3>Day 6️⃣ (Saturday): Freestyle & Play</h3>
+                    <p>Muscle-Up Progressions – 10 min 🏋️‍♂️</p>
+                    <p>Human Flag Practice – 3x5 sec/side 🚩</p>
+                    <p>Handstand Walks – 3x10 steps 🚶‍♂️</p>
+                    <p>Parkour Basics – Vaults/Rolling 🏃‍♂️</p>
+                    <p>(Have fun! 😄)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Location -->
+    <section class="location" id="location">
+        <div class="container">
+            <h2 class="section-title reveal">Our Location</h2>
+            <div class="location-container">
+                <div class="map-container reveal">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3635.570712666092!2d79.07413837515436!3d21.07967418058246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd4bf1b58fb6519%3A0x6cbe7ba3e9ac2854!2sLakudkar&#39;s%20Fitness%20Gym!5e1!3m2!1sen!2sin!4v1743186760740!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+                <div class="location-info reveal delay-1">
+                    <h3>Operating Hours</h3>
+                    <ul class="hours-list">
+                        <li>
+                            <span class="day">Monday - Saturday</span>
+                            <span class="time">6:00 AM - 10:00 PM</span>
+                        </li>
+                        <li>
+                            <span class="day">Sunday</span>
+                            <span class="time">Closed</span>
+                        </li>
+                    </ul>
+                    <h3>Parking Information</h3>
+                    <p>Ample parking space available in front of the gym. First come, first served basis.</p>
+                    <div class="parking-image">
+                        <img src="https://tse1.mm.bing.net/th?id=OIP.Oke_TneWMJ1b0_M4kWrSKwHaFj&pid=Api&P=0&h=180" alt="Parking Area">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title reveal">Contact Us</h2>
+            <div class="contact-container reveal">
+                <form id="contact-form" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-control" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-group full-width submit-btn">
+                        <button type="submit" class="btn">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Lakudkar Gym</h3>
+                    <p>Transform your fitness journey with our expert trainers and state-of-the-art facilities. Join us today and achieve your fitness goals!</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="quick-links">
+                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#membership"><i class="fas fa-chevron-right"></i> Membership Plans</a></li>
+                        <li><a href="#diet"><i class="fas fa-chevron-right"></i> Diet Plan</a></li>
+                        <li><a href="#location"><i class="fas fa-chevron-right"></i> Location</a></li>
+                        <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Gym Address, City, State - 440034</p>
+                    <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                    <p><i class="fas fa-envelope"></i> info@lakudkargym.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Lakudkar Gym. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div class="chatbot-btn" id="chatbot-btn">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+    <div class="chatbot-container" id="chatbot-container">
+        <div class="chatbot-header">
+            <h3>Lakudkar Gym Assistant</h3>
+            <button class="close-chatbot" id="close-chatbot">&times;</button>
+        </div>
+        <div class="chatbot-messages" id="chatbot-messages">
+            <div class="message bot-message">Hello! How can I help you today?</div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbot-input" placeholder="Type your message...">
+            <button id="send-message"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Preloader
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.preloader').classList.add('fade-out');
+                setTimeout(function() {
+                    document.querySelector('.preloader').style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
+
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const nav = document.getElementById('nav');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            nav.classList.toggle('active');
+            mobileMenuBtn.innerHTML = nav.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking on a link
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                nav.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // Chatbot
+        const chatbotBtn = document.getElementById('chatbot-btn');
+        const chatbotContainer = document.getElementById('chatbot-container');
+        const closeChatbot = document.getElementById('close-chatbot');
+        const sendMessageBtn = document.getElementById('send-message');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+
+        chatbotBtn.addEventListener('click', function() {
+            chatbotContainer.classList.toggle('active');
+        });
+
+        closeChatbot.addEventListener('click', function() {
+            chatbotContainer.classList.remove('active');
+        });
+
+        sendMessageBtn.addEventListener('click', sendMessage);
+        chatbotInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const message = chatbotInput.value.trim();
+            if (message) {
+                // Add user message
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message user-message';
+                userMessage.textContent = message;
+                chatbotMessages.appendChild(userMessage);
+                
+                // Clear input
+                chatbotInput.value = '';
+                
+                // Scroll to bottom
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                
+                // Simulate bot response after a delay
+                setTimeout(function() {
+                    const botResponse = getBotResponse(message);
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'message bot-message';
+                    botMessage.textContent = botResponse;
+                    chatbotMessages.appendChild(botMessage);
+                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        function getBotResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('hi') || lowerMessage.includes('hello')) {
+                return "Hello! How can I help you today?";
+            } else if (lowerMessage.includes('membership') || lowerMessage.includes('price')) {
+                return "We offer various membership plans starting at ₹1,500 per month. Would you like more details about our Gym, Dance, or Calisthenics packages?";
+            } else if (lowerMessage.includes('time') || lowerMessage.includes('hour')) {
+                return "We're open Monday to Saturday from 6:00 AM to 10:00 PM. Closed on Sundays.";
+            } else if (lowerMessage.includes('location') || lowerMessage.includes('address')) {
+                return "Our gym is located at Gym Address, City, State - 440034. You can find us on Google Maps using the link in our Location section.";
+            } else if (lowerMessage.includes('contact') || lowerMessage.includes('phone')) {
+                return "You can reach us at +91 1234567890 or email us at info@lakudkargym.com. Feel free to fill out the contact form on our website as well!";
+            } else {
+                return "Thanks for your message! For specific inquiries about memberships, classes, or personal training, please visit our website or give us a call.";
+            }
+        }
+
+        // Form submission
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Here you would typically send this data to your server
+            // For this example, we'll just show an alert
+            alert(`Thank you, ${name}! Your message has been received. We'll contact you soon at ${email}.`);
+            
+            // Reset form
+            contactForm.reset();
+        });
+
+        // Scroll reveal animation
+        const scrollReveal = ScrollReveal({
+            origin: 'top',
+            distance: '30px',
+            duration: 1000,
+            reset: true
+        });
+
+        scrollReveal.reveal('.reveal', { 
+            interval: 200,
+            mobile: false
+        });
+
+        // 3D Dumbbell Animation with Three.js
+        function initDumbbellAnimation() {
+            const container = document.getElementById('dumbbell-container');
+            
+            // Check if WebGL is supported
+            if (!WebGL.isWebGLAvailable()) {
+                return;
+            }
+            
+            // Scene setup
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+            
+            // Create dumbbell
+            const createDumbbell = () => {
+                const group = new THREE.Group();
+                
+                // Bar
+                const barGeometry = new THREE.CylinderGeometry(0.2, 0.2, 6, 32);
+                const barMaterial = new THREE.MeshPhongMaterial({ 
+                    color: 0xcccccc,
+                    specular: 0x111111,
+                    shininess: 30
+                });
+                const bar = new THREE.Mesh(barGeometry, barMaterial);
+                bar.rotation.z = Math.PI / 2;
+                group.add(bar);
+                
+                // Weights
+                const weightGeometry = new THREE.CylinderGeometry(1.5, 1.5, 1, 32);
+                const weightMaterial = new THREE.MeshPhongMaterial({ 
+                    color: 0xd4af37,
+                    specular: 0x111111,
+                    shininess: 30
+                });
+                
+                const weight1 = new THREE.Mesh(weightGeometry, weightMaterial);
+                weight1.position.x = 3;
+                group.add(weight1);
+                
+                const weight2 = new THREE.Mesh(weightGeometry, weightMaterial);
+                weight2.position.x = -3;
+                group.add(weight2);
+                
+                return group;
+            };
+            
+            const dumbbell1 = createDumbbell();
+            dumbbell1.position.set(-5, 2, -15);
+            scene.add(dumbbell1);
+            
+            const dumbbell2 = createDumbbell();
+            dumbbell2.position.set(5, -1, -20);
+            dumbbell2.scale.set(0.8, 0.8, 0.8);
+            scene.add(dumbbell2);
+            
+            const dumbbell3 = createDumbbell();
+            dumbbell3.position.set(0, 3, -25);
+            dumbbell3.scale.set(0.6, 0.6, 0.6);
+            scene.add(dumbbell3);
+            
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+            
+            // Camera position
+            camera.position.z = 5;
+            
+            // Animation
+            const animate = () => {
+                requestAnimationFrame(animate);
+                
+                dumbbell1.rotation.y += 0.005;
+                dumbbell1.rotation.x += 0.003;
+                
+                dumbbell2.rotation.y -= 0.004;
+                dumbbell2.rotation.z += 0.002;
+                
+                dumbbell3.rotation.x -= 0.003;
+                dumbbell3.rotation.z -= 0.004;
+                
+                renderer.render(scene, camera);
+            };
+            
+            animate();
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+        
+        // Initialize 3D animation
+        document.addEventListener('DOMContentLoaded', initDumbbellAnimation);
+    </script>
+</body>
+</html>
